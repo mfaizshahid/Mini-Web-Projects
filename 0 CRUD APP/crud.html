@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Link CSS -->
+        <link rel="stylesheet" href="./css/crud.css">
+        <title>CRUD - APP</title>
+        <!-- Material icon -->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    </head>
+
+    <body>
+        <!-- ================= Navbar ================= -->
+        <section id="navbar">
+            <!-- Navbar header -->
+            <div class="navbar-header"></div>
+            <!-- Navbar -->
+            <nav class="navbar">
+                <!-- Menu icon -->
+                <span class="material-icons nav-menu-icon" id="menu_icon">menu</span>
+                <!-- <img src=" assets/icons/menuOpen.svg" class="nav-menu-icon" id="menu-icon" alt="menu open icon"> -->
+                <!-- Title -->
+                <a href="crud.html" class="nav-title">Crud App</a>
+                <!-- Github button -->
+                <!-- TODO: Add Github link -->
+                <a class="nav-github-btn" href="#">Github</a>
+            </nav>
+        </section>
+        <!-- ================= Sidebar ================= -->
+        <section id="sidebar">
+            <!-- Add new record  -->
+            <div class="sidebar-link" id="add_record_link">
+                <!-- Add icon -->
+                <span class="material-icons">
+                    person_add_alt_1
+                </span>
+                <span> Add New Record</span>
+            </div>
+
+            <!-- View record by id  -->
+            <div class="sidebar-link" id="view_record_link">
+                <!-- Read icon -->
+                <span class="material-icons">
+                    account_box
+                </span>
+                <span> View Record</span>
+            </div>
+
+            <!-- Update record by id  -->
+            <div class="sidebar-link" id="update_record_link">
+                <!-- Edit icon -->
+                <span class="material-icons">
+                    edit
+                </span>
+                <span> Update Record</span>
+            </div>
+
+            <!-- Delete record by id  -->
+            <div class="sidebar-link" id="delete_record_link">
+                <!-- Delete icon -->
+                <span class="material-icons">
+                    person_remove
+                </span>
+
+                <span> Delete Record</span>
+            </div>
+
+            <!-- Change your name  -->
+            <div class="sidebar-link" id="update_name_link">
+                <!-- Update icon -->
+                <span class="material-icons">
+                    drive_file_rename_outline
+                </span>
+                <span>
+                    Update Your Name
+                </span>
+            </div>
+
+            <!-- Delete all records  -->
+            <div class="sidebar-link" id="delete_all_link">
+                <!-- Delete icon -->
+                <span class="material-icons">
+                    delete
+                </span>
+                <span> Delete All Records</span>
+            </div>
+        </section>
+        <!-- ================= Main content ================= -->
+        <section id="main_content">
+            <!-- Welcome message -->
+            <div class="username">
+                <!-- User icon -->
+                <span class="material-icons">
+                    person
+                </span>
+                <!-- Username -->
+                <h2 id="user_name"></h2>
+            </div>
+            <!-- Data table -->
+            <table id="table">
+                <!-- Table head -->
+                <thead>
+                    <tr>
+                        <th>Sr. No</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody>
+                </tbody>
+            </table>
+        </section>
+        <!-- ================= Data modal ================= -->
+        <section class="modal" id="data_modal">
+            <!-- Model card -->
+            <div class="modal-card">
+                <!-- Card header -->
+                <div class="modal-card-header">
+                    <h3></h3>
+                    <span class="material-icons close-modal-button">
+                        close
+                    </span>
+                </div>
+                <!-- Card body -->
+                <div class="modal-card-body"></div>
+                <!-- Card footer -->
+                <div class="modal-card-footer"></div>
+            </div>
+            <!-- Overlay -->
+            <div class="modal-overlay"></div>
+        </section>
+        <!-- Link JS -->
+        <script src="./js/crud.js"></script>
+
+    </body>
+
+</html>

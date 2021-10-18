@@ -1,0 +1,375 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+/* ================= Body Style ================= */
+body {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+/* Links decoration none */
+a {
+  text-decoration: none;
+}
+/*  ================= Variables ================= */
+:root {
+  --primary-color: #009688;
+  --primary-light-color: #52c7b8;
+  --primary-dark-color: #00675b;
+  --secondary-color: #4caf50;
+  --secondary-light-color: #80e27e;
+  --secondary-dark-color: #087f23;
+  --danger-color: #c62828;
+  --danger-light-color: #ff5f52;
+  --danger-dark-color: #8e0000;
+  --info-color: #fbc02d;
+  --info-light-color: #fff263;
+  --info-dark-color: #c49000;
+  --text-dark-color: #000000;
+  --text-white-color: #ffffff;
+}
+
+/* ================= Navbar Style =================  */
+#navbar {
+  position: sticky;
+  top: 0;
+}
+/* Navbar header */
+#navbar .navbar-header {
+  background-color: var(--primary-dark-color);
+  height: 0.6rem;
+}
+
+/* Navbar */
+#navbar .navbar {
+  background-color: var(--primary-color);
+  padding: 0.8rem 1rem;
+  display: flex;
+  align-items: center;
+}
+/* Navbar menu icon */
+#navbar .navbar .nav-menu-icon {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Navbar title */
+#navbar .navbar .nav-title {
+  color: var(--text-dark-color);
+  font-size: 1.5rem;
+  margin-left: 1rem;
+}
+
+/* Navbar github button */
+#navbar .navbar .nav-github-btn {
+  background-color: var(--info-color);
+  color: var(--text-dark-color);
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  margin-left: auto;
+  transition: background-color 0.2s linear 0.1s;
+}
+
+/* Navbar github button hover state*/
+#navbar .navbar .nav-github-btn:hover {
+  background-color: var(--info-dark-color);
+}
+
+/* ================= Sidebar style =================  */
+#sidebar {
+  background-color: var(--primary-color);
+  height: 100%;
+  width: 3.75rem;
+  overflow: hidden;
+  position: fixed;
+  transition: all 0.2s linear 0.1s;
+}
+/* Sidebar open */
+#sidebar.open {
+  width: 15rem;
+}
+
+/* Sidebar link */
+#sidebar .sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  margin: 1rem 0;
+  cursor: pointer;
+  font-size: 0.93rem;
+  transition: all 0.2s linear 0.1s;
+}
+
+/* Sidebar link first child*/
+#sidebar .sidebar-link:first-child {
+  margin-top: 0;
+}
+
+/* Sidebar link hover */
+#sidebar .sidebar-link:hover,
+#sidebar .sidebar-link.active {
+  background-color: var(--primary-dark-color);
+  color: var(--text-white-color);
+}
+/* Sidebar link icon */
+#sidebar .sidebar-link > span.material-icons {
+  font-size: 1.8rem;
+  margin-right: 1rem;
+}
+
+/* ================= Main content style =================  */
+#main_content {
+  margin-left: 3.75rem;
+  transition: all 0.2s linear 0.1s;
+  min-height: calc(100vh - 4.585rem);
+}
+#main_content.open {
+  margin-left: 15rem;
+}
+/* Username */
+#main_content .username {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid var(--text-dark-color);
+}
+/* Username user icon */
+#main_content .username span {
+  font-size: 2.5rem;
+  margin-right: 1rem;
+}
+/* Table */
+#main_content #table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1.5rem;
+}
+/* Table heading & table row */
+#main_content #table td,
+#main_content #table th {
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  padding: 0.3rem 0.5rem;
+  text-align: left;
+}
+
+/* Even table row */
+#main_content #table tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+/* Even table row hover */
+#main_content #table tr:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Header row */
+#main_content #table th {
+  background-color: var(--primary-dark-color);
+  color: var(--text-white-color);
+}
+
+/* No record row hover state */
+#main_content #table .no-record-row:hover {
+  background-color: transparent;
+}
+/* No record data */
+#main_content #table .no-record-data {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: xx-large;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+/* Action icons */
+#main_content #table tr span {
+  font-size: 2rem;
+  cursor: pointer;
+  border-radius: 0.5rem;
+  transition: all 0.2s linear 0.1s;
+}
+/* Edit action icon */
+#main_content #table tr span.edit {
+  background-color: var(--primary-color);
+  color: var(--text-dark-color);
+  margin-right: 0.7rem;
+}
+/* Edit action icon hover state */
+#main_content #table tr span.edit:hover {
+  background-color: var(--primary-dark-color);
+  color: var(--text-white-color);
+}
+/* Delete action icon */
+#main_content #table tr span.delete {
+  background-color: var(--danger-color);
+  color: var(--text-dark-color);
+}
+/* Delete action icon hover state*/
+#main_content #table tr span.delete:hover {
+  background-color: var(--danger-dark-color);
+  color: var(--text-white-color);
+}
+
+/* ================= Hideing element style =================  */
+.hide-element {
+  display: none;
+  opacity: 0;
+}
+
+/* ================= Modal style=================  */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: -500%;
+  left: 50%;
+  transform: translateX(-50%);
+  --card-padding: 0.5rem 1rem;
+  --border-radius: 5px;
+  transition: top 0.1s linear;
+}
+
+/* Modal card */
+.modal .modal-card {
+  background-color: var(--text-white-color);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: var(--border-radius);
+  width: 80%;
+  opacity: 0;
+  transform: translateY(-500%);
+  transition: transform 0.6s linear 0.1s, opacity 0.6s linear 0.2s;
+}
+
+/* Modal card header */
+.modal-card .modal-card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  padding: var(--card-padding);
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Modal card header close button */
+.modal-card .modal-card-header span {
+  cursor: pointer;
+}
+
+/* Modal card body */
+.modal-card .modal-card-body {
+  padding: var(--card-padding);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+/* Modal card body input */
+.modal-card .modal-card-body input {
+  width: 100%;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  margin-top: 0.2rem;
+  outline: none;
+}
+/* Modal card body label */
+.modal-card .modal-card-body label {
+  font-size: 0.9rem;
+}
+
+/* Modal card body input focus state*/
+.modal-card .modal-card-body input:focus {
+  border: 2px solid var(--primary-dark-color);
+}
+
+/* Error alert */
+.modal-card .modal-card-body .error-alert {
+  margin-bottom: 1rem;
+  color: var(--danger-color);
+  margin-top: -0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Modal card footer  */
+.modal-card .modal-card-footer {
+  text-align: end;
+  padding: var(--card-padding);
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+/* Modal card footer modal button */
+.modal-card .modal-card-footer .modal-btn {
+  padding: 0.6rem 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s linear 0.1s;
+}
+
+/* Modal card footer modal submit button */
+.modal-card .modal-card-footer .btn-submit {
+  background-color: var(--primary-color);
+  color: var(--text-white-color);
+}
+
+/* Modal card footer modal submit button  hover state */
+.modal-card .modal-card-footer .btn-submit:hover {
+  background-color: var(--primary-dark-color);
+}
+
+/* Modal card footer modal cancel button */
+.modal-card .modal-card-footer .btn-cancel {
+  background-color: rgba(0, 0, 0, 0.35);
+  margin-right: 1rem;
+}
+
+/* Modal card footer modal cancel button hover state */
+.modal-card .modal-card-footer .btn-cancel:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Modal card footer modal update button */
+.modal-card .modal-card-footer .btn-update {
+  background-color: var(--info-color);
+}
+
+/* Modal card footer modal update button hover state */
+.modal-card .modal-card-footer .btn-update:hover {
+  background-color: var(--info-dark-color);
+}
+
+/* Modal overlay */
+.modal .modal-overlay {
+  background-color: var(--text-dark-color);
+  opacity: 0.3;
+  z-index: -1;
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Modal open */
+.modal.open {
+  top: 0;
+}
+
+/* Modal card open animation  */
+.modal .modal-card.animation-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media screen and (min-width: 850px) and (max-width: 1400px) {
+  /* Modal card */
+  .modal .modal-card {
+    width: 40rem;
+  }
+}
