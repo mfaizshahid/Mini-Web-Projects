@@ -46,7 +46,6 @@ mediaQuery850To1400.addEventListener("change", (e) => {
 
 // Open add new record modal (Add new link sidebar button click)
 addRecordLink.addEventListener("click", () => {
-  const mode = "addRecord";
   const title = "Add New Record";
   const inputFieldsData = [
     convertInputDataToObject("name", "Name", "Enter Name", "text", true, false, null), // Name input field data
@@ -59,8 +58,26 @@ addRecordLink.addEventListener("click", () => {
   const form = createForm();
   createModal(title, inputFieldsData, formBtns); // Create add new record modal
   const emailField = document.querySelector(".modal-card-body input[type=email]"); // Email input field
-  emailField.addEventListener("change", emailEventListner); // Event input field for checking duplicate email
-  form.addEventListener("submit", addRecordEventListner); // Form submit event listner
+  emailField.addEventListener("change", emailEventListner); // Input field change event for checking duplicate email
+  form.addEventListener("submit", addRecord); // Form submit event listner
+  showModal();
+});
+
+// Open search modal (View record by ID sidebar button click)
+viewRecordLink.addEventListener("click", () => {
+  const title = "Search Record";
+  const inputFieldsData = [
+    convertInputDataToObject("id", "Search Record", "Enter ID", "number", true, false, null), // Search input field & label
+  ];
+  const formBtns = [
+    convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+    convertFormButtonsToObject("submit", "Search Record", ["modal-btn", "btn-submit"]),
+  ]; // Form cancel & search buttons
+  const form = createForm();
+  createModal(title, inputFieldsData, formBtns); // Create search record modal
+  const searchField = document.querySelector(".modal-card-body input[type=number]"); // Search input field
+  searchField.addEventListener("change", numberEventListner); // Input field change event for checking record existance
+  form.addEventListener("submit", viewRecord);
   showModal();
 });
 
@@ -71,6 +88,51 @@ modalCardHeaderCloseBtn.addEventListener("click", hideModal);
 modalOverlay.addEventListener("click", hideModal);
 
 // ================= Functions =================
+/**
+ * Add new user & display in table
+ * @param {Event} e HTML event
+ */
+function addRecord(e) {
+  e.preventDefault();
+  let userData = { id: all_record.length + 1 };
+  let formData = new FormData(e.target); // Get form values
+  formData = Object.fromEntries(formData); // Convert form values to object
+  userData = { ...userData, ...formData };
+  userData["createdAt"] = new Date().toLocaleString();
+  // userData = {id, name, email, createdAt}
+  all_record.push(userData); // Push record into array
+  if (all_record.length === 1) removeNoRecordToDisplayMsg(); // Remove no data to display msg
+  addNewTableRow(userData); // Add new table row
+  hideModal();
+}
+
+/**
+ * Hide search modal & display user record modal
+ * @param {Event} e HTML event object
+ */
+function viewRecord(e) {
+  e.preventDefault();
+  let data = new FormData(e.target); // Get form values
+  data = Object.fromEntries(data); // Convert form values to object
+  data.id = data.id - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
+  hideModal(); // Hide search modal
+  // Show view record modal after hiding search record modal
+  setTimeout(() => {
+    const userData = all_record[data.id]; // Extract user data from array
+    const title = "View Record"; // Modal title
+    const inputFieldsData = [
+      convertInputDataToObject("name", "Name", null, "text", false, true, userData.name), // Name Input field
+      convertInputDataToObject("email", "Email", null, "email", false, true, userData.email), // Email Input field
+      convertInputDataToObject("createdAt", "Created At", null, "text", false, true, userData.createdAt), // Created At Input field
+    ];
+    const formBtns = [convertFormButtonsToObject("button", "Go Back", ["modal-btn", "btn-cancel"])]; // Form go back button
+    // Form creation is important because when removeModalFields function remove form. (No form here means error)
+    const form = createForm();
+    createModal(title, inputFieldsData, formBtns);
+    showModal();
+  }, 700);
+}
+
 /**
  * Create modal input fields, buttons & set title
  * @param {string} title Modal heading
@@ -109,8 +171,9 @@ function createForm() {
   modalCardHeader.insertAdjacentElement("afterend", form); // Insert form after modal header
   return form;
 }
+
 /**
- *
+ * Change event listner for input type email fields to check duplicate email
  * @param {Event} e HTML event object
  */
 function emailEventListner(e) {
@@ -121,30 +184,36 @@ function emailEventListner(e) {
   // If email already exisit in record
   if (checkDuplicateEmail(email)) {
     submitBtn.disabled = true; // Disable submit button
-    const errorElement = document.createElement("div"); // Create error alert
-    errorElement.classList.add("error-alert");
-    errorElement.innerText = "Email already exist";
+    const errorElement = createErrorAlert("Email already exisit");
     e.target.insertAdjacentElement("afterend", errorElement);
   } else submitBtn.disabled = false; // Enable submit button
 }
 
 /**
- *
- * @param {Event} e HTML event
+ * Change event listner for input type number fields to check record existance
+ * @param {Event} e HTML event object
  */
-function addRecordEventListner(e) {
-  e.preventDefault();
-  let userData = { id: all_record.length + 1 };
-  // Get form values
-  let formData = new FormData(e.target);
-  formData = Object.fromEntries(formData); // Convert form values to object
-  userData = { ...userData, ...formData };
-  userData["createdAt"] = new Date().toLocaleString();
-  // userData = {id, name, email, createdAt}
-  all_record.push(userData); // Push record into array
-  if (all_record.length === 1) removeNoRecordToDisplayMsg(); // Remove no data to display msg
-  addNewTableRow(userData); // Add new table row
-  hideModal();
+function numberEventListner(e) {
+  const submitBtn = document.querySelector(".modal-card-footer input[type=submit]"); // Form submit button
+  const id = e.target.value; // Extract id
+  const errorAlert = e.target.nextElementSibling; // Extracting next sibling (always error alert)
+  if (errorAlert) errorAlert.remove(); // Remove error alert
+  // If no record exist show No record to display error
+  if (all_record.length <= 0) {
+    submitBtn.disabled = true; // Disable submit button
+    const errorElement = createErrorAlert("No record to display");
+    e.target.insertAdjacentElement("afterend", errorElement);
+    // If user input is not +ve value  show ID must be greate than 0 error
+  } else if (id <= 0) {
+    submitBtn.disabled = true; // Disable submit button
+    const errorElement = createErrorAlert("ID must be greate than 0");
+    e.target.insertAdjacentElement("afterend", errorElement);
+    // If id greater than total records show ID doesn't exist error
+  } else if (id > all_record.length) {
+    submitBtn.disabled = true; // Disable submit button
+    const errorElement = createErrorAlert("ID doesn't exist");
+    e.target.insertAdjacentElement("afterend", errorElement);
+  } else submitBtn.disabled = false; // Enable submit button
 }
 
 /**
@@ -286,6 +355,17 @@ function createIcon(innerText, classList) {
   return icon;
 }
 
+/**
+ * Create error alert & return
+ * @param {string} errorMsg Error message to display
+ * @returns {HTMLElement} error alert
+ */
+function createErrorAlert(errorMsg) {
+  const errorAlert = document.createElement("div");
+  errorAlert.classList.add("error-alert");
+  errorAlert.innerText = errorMsg;
+  return errorAlert;
+}
 /**
  * Set person name
  */
