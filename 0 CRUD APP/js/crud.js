@@ -81,6 +81,24 @@ viewRecordLink.addEventListener("click", () => {
   showModal();
 });
 
+// Open search modal (Update record by ID sidebar button click)
+updateRecordLink.addEventListener("click", () => {
+  const title = "Search Record";
+  const inputFieldsData = [
+    convertInputDataToObject("id", "Search Record", "Enter ID", "number", true, false, null), // Search input field & label
+  ];
+  const formBtns = [
+    convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+    convertFormButtonsToObject("submit", "Search Record", ["modal-btn", "btn-submit"]),
+  ]; // Form cancel & search buttons
+  const form = createForm();
+  createModal(title, inputFieldsData, formBtns); // Create search record modal
+  const searchField = document.querySelector(".modal-card-body input[type=number]"); // Search input field
+  searchField.addEventListener("change", numberEventListner); // Input field change event for checking record existance
+  form.addEventListener("submit", createUpdateRecordModal);
+  showModal();
+});
+
 // Close modal on close button click
 modalCardHeaderCloseBtn.addEventListener("click", hideModal);
 
@@ -129,6 +147,55 @@ function viewRecord(e) {
     // Form creation is important because when removeModalFields function remove form. (No form here means error)
     const form = createForm();
     createModal(title, inputFieldsData, formBtns);
+    showModal();
+  }, 700);
+}
+
+/**
+ * Update user record
+ * @param {Event} e HTML event object
+ */
+function updateRecord(e) {
+  e.preventDefault();
+  let id = e.currentTarget.userId - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
+  let data = new FormData(e.target); // Get form values
+  data = Object.fromEntries(data); // Convert form values to object
+  let newData = all_record[id]; // Get record from array
+  newData = { ...newData, ...data }; // Merge objects
+  all_record[id] = newData; // Update record in array
+  updateTableRow(newData); // Update table row
+  hideModal();
+}
+
+/**
+ * Hide search modal & display update record modal
+ * @param {Event} e HTML event object
+ */
+function createUpdateRecordModal(e) {
+  e.preventDefault();
+  let data = new FormData(e.target); // Get form values
+  data = Object.fromEntries(data); // Convert form values to object
+  data.id = data.id - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
+  hideModal(); // Hide search modal
+  // Show view record modal after hiding search record modal
+  setTimeout(() => {
+    const userData = all_record[data.id]; // Extract user data from array
+    const title = "Update Record"; // Modal title
+    const inputFieldsData = [
+      convertInputDataToObject("name", "Name", "Enter Name", "text", true, false, userData.name), // Name Input field
+      convertInputDataToObject("email", "Email", "Enter Email", "email", true, false, userData.email), // Email Input field
+      convertInputDataToObject("createdAt", "Created At", null, "text", false, true, userData.createdAt), // Created At Input field
+    ];
+    const formBtns = [
+      convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+      convertFormButtonsToObject("submit", "Update Record", ["modal-btn", "btn-update"]),
+    ]; // Form cancel & submit button
+    const form = createForm();
+    createModal(title, inputFieldsData, formBtns);
+    const emailField = document.querySelector(".modal-card-body input[type=email]"); // Email input field
+    emailField.addEventListener("change", emailEventListner); // Input field change event for checking duplicate email
+    form.addEventListener("submit", updateRecord); // Form submit event listner
+    form.userId = userData.id; // Pass user id as an parameter
     showModal();
   }, 700);
 }
@@ -223,6 +290,7 @@ function numberEventListner(e) {
 function addNewTableRow(userData) {
   const dataValues = Object.values(userData); // Convert object values to array
   const tableRow = document.createElement("tr");
+  tableRow.id = dataValues[0]; // Set id of row
   // Loop through data & create table data
   for (let value of dataValues) {
     const tableData = document.createElement("td");
@@ -236,6 +304,22 @@ function addNewTableRow(userData) {
   actionColumn.appendChild(deleteIcon);
   tableRow.appendChild(actionColumn); // Append td into tr
   tableBody.appendChild(tableRow); // Append tr into tbody
+}
+
+/**
+ * Update user data in table
+ * @param {object} userData Object contain user information
+ */
+function updateTableRow(userData) {
+  const dataValues = Object.values(userData); // Convert object values to array
+  const tableRow = document.getElementById(userData.id);
+  let index = 0;
+  for (let tableData of tableRow.children) {
+    // Do not update table data contain icons
+    if (index > 3) break;
+    tableData.innerText = dataValues[index]; // Update table data
+    index++; // Increment index
+  }
 }
 
 /**
