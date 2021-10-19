@@ -314,36 +314,46 @@ a {
   transition: all 0.2s linear 0.1s;
 }
 
-/* Modal card footer modal submit button */
+/* Add record button */
 .modal-card .modal-card-footer .btn-submit {
   background-color: var(--primary-color);
   color: var(--text-white-color);
 }
 
-/* Modal card footer modal submit button  hover state */
+/* Add record button hover state */
 .modal-card .modal-card-footer .btn-submit:hover {
   background-color: var(--primary-dark-color);
 }
 
-/* Modal card footer modal cancel button */
+/* Cancel button */
 .modal-card .modal-card-footer .btn-cancel {
   background-color: rgba(0, 0, 0, 0.35);
   margin-right: 1rem;
 }
 
-/* Modal card footer modal cancel button hover state */
+/* Cancel button hover state */
 .modal-card .modal-card-footer .btn-cancel:hover {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Modal card footer modal update button */
+/* Update record button */
 .modal-card .modal-card-footer .btn-update {
   background-color: var(--info-color);
 }
 
-/* Modal card footer modal update button hover state */
+/* Update record button hover state */
 .modal-card .modal-card-footer .btn-update:hover {
   background-color: var(--info-dark-color);
+}
+/* Delete record button */
+.modal-card .modal-card-footer .btn-delete {
+  background-color: var(--danger-color);
+  color: var(--text-white-color);
+}
+
+/* Delete record button hover state */
+.modal-card .modal-card-footer .btn-delete:hover {
+  background-color: var(--danger-dark-color);
 }
 
 /* Modal overlay */

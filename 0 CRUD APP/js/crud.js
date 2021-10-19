@@ -99,6 +99,24 @@ updateRecordLink.addEventListener("click", () => {
   showModal();
 });
 
+// Open search modal (Delete record by ID sidebar button click)
+deleteRecordLink.addEventListener("click", () => {
+  const title = "Search Record";
+  const inputFieldsData = [
+    convertInputDataToObject("id", "Search Record", "Enter ID", "number", true, false, null), // Search input field & label
+  ];
+  const formBtns = [
+    convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+    convertFormButtonsToObject("submit", "Search Record", ["modal-btn", "btn-submit"]),
+  ]; // Form cancel & search buttons
+  const form = createForm();
+  createModal(title, inputFieldsData, formBtns); // Create search record modal
+  const searchField = document.querySelector(".modal-card-body input[type=number]"); // Search input field
+  searchField.addEventListener("change", numberEventListner); // Input field change event for checking record existance
+  form.addEventListener("submit", createDeleteRecordModal);
+  showModal();
+});
+
 // Close modal on close button click
 modalCardHeaderCloseBtn.addEventListener("click", hideModal);
 
@@ -168,6 +186,19 @@ function updateRecord(e) {
 }
 
 /**
+ * Delete user record
+ * @param {Event} e HTML event object
+ */
+function deleteRecord(e) {
+  e.preventDefault();
+  let id = e.currentTarget.userId; // Get user id to remove record
+  all_record = all_record.filter((record) => record.id != id); // Filter record & remove record
+  deleteTableRow(id);
+  if (all_record.length <= 0) noRecordToDisplayMsg();
+  hideModal();
+}
+
+/**
  * Hide search modal & display update record modal
  * @param {Event} e HTML event object
  */
@@ -195,6 +226,37 @@ function createUpdateRecordModal(e) {
     const emailField = document.querySelector(".modal-card-body input[type=email]"); // Email input field
     emailField.addEventListener("change", emailEventListner); // Input field change event for checking duplicate email
     form.addEventListener("submit", updateRecord); // Form submit event listner
+    form.userId = userData.id; // Pass user id as an parameter
+    showModal();
+  }, 700);
+}
+
+/**
+ * Hide search modal & display delete record modal
+ * @param {Event} e HTML event object
+ */
+function createDeleteRecordModal(e) {
+  e.preventDefault();
+  let data = new FormData(e.target); // Get form values
+  data = Object.fromEntries(data); // Convert form values to object
+  data.id = data.id - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
+  hideModal(); // Hide search modal
+  // Show view record modal after hiding search record modal
+  setTimeout(() => {
+    const userData = all_record[data.id]; // Extract user data from array
+    const title = "Delete Record"; // Modal title
+    const inputFieldsData = [
+      convertInputDataToObject("name", "Name", "Enter Name", "text", true, true, userData.name), // Name Input field
+      convertInputDataToObject("email", "Email", "Enter Email", "email", true, true, userData.email), // Email Input field
+      convertInputDataToObject("createdAt", "Created At", null, "text", false, true, userData.createdAt), // Created At Input field
+    ];
+    const formBtns = [
+      convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+      convertFormButtonsToObject("submit", "Delete Record", ["modal-btn", "btn-delete"]),
+    ]; // Form cancel & submit button
+    const form = createForm();
+    createModal(title, inputFieldsData, formBtns);
+    form.addEventListener("submit", deleteRecord); // Form submit event listner
     form.userId = userData.id; // Pass user id as an parameter
     showModal();
   }, 700);
@@ -320,6 +382,15 @@ function updateTableRow(userData) {
     tableData.innerText = dataValues[index]; // Update table data
     index++; // Increment index
   }
+}
+
+/**
+ * Delete record of user from table
+ * @param {number} id User Id of the deleted user
+ */
+function deleteTableRow(id) {
+  const tableRow = document.getElementById(id);
+  tableRow.remove();
 }
 
 /**
