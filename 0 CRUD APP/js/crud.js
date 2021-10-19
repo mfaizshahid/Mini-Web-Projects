@@ -324,7 +324,8 @@ function emailEventListner(e) {
  */
 function numberEventListner(e) {
   const submitBtn = document.querySelector(".modal-card-footer input[type=submit]"); // Form submit button
-  const id = e.target.value; // Extract id
+  const id = parseInt(e.target.value); // Extract id
+  console.log(isUserExisit(id));
   const errorAlert = e.target.nextElementSibling; // Extracting next sibling (always error alert)
   if (errorAlert) errorAlert.remove(); // Remove error alert
   // If no record exist show No record to display error
@@ -338,7 +339,7 @@ function numberEventListner(e) {
     const errorElement = createErrorAlert("ID must be greate than 0");
     e.target.insertAdjacentElement("afterend", errorElement);
     // If id greater than total records show ID doesn't exist error
-  } else if (id > all_record.length) {
+  } else if (id > all_record.length || !isUserExisit(id)) {
     submitBtn.disabled = true; // Disable submit button
     const errorElement = createErrorAlert("ID doesn't exist");
     e.target.insertAdjacentElement("afterend", errorElement);
@@ -394,8 +395,8 @@ function deleteTableRow(id) {
 }
 
 /**
- *
- * @param {string} email Email of found in exisiting data
+ * Check email existance & return true if found else false
+ * @param {string} email User email for check duplication
  * @returns {boolean} true if email found else false
  */
 function checkDuplicateEmail(email) {
@@ -521,6 +522,18 @@ function createErrorAlert(errorMsg) {
   errorAlert.innerText = errorMsg;
   return errorAlert;
 }
+
+/**
+ * Check user existance & return true if found else false
+ * @param {number} id user id for record existance
+ * @returns {boolean} true if email found else false
+ */
+function isUserExisit(id) {
+  let found = false;
+  for (let dataObj of all_record) if (dataObj.id === id) found = true;
+  return found;
+}
+
 /**
  * Set person name
  */
