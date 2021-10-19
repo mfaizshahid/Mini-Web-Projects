@@ -150,11 +150,10 @@ function viewRecord(e) {
   e.preventDefault();
   let data = new FormData(e.target); // Get form values
   data = Object.fromEntries(data); // Convert form values to object
-  data.id = data.id - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
   hideModal(); // Hide search modal
   // Show view record modal after hiding search record modal
   setTimeout(() => {
-    const userData = all_record[data.id]; // Extract user data from array
+    const userData = getUserData(parseInt(data.id)); // Get user data
     const title = "View Record"; // Modal title
     const inputFieldsData = [
       convertInputDataToObject("name", "Name", null, "text", false, true, userData.name), // Name Input field
@@ -175,12 +174,17 @@ function viewRecord(e) {
  */
 function updateRecord(e) {
   e.preventDefault();
-  let id = e.currentTarget.userId - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
+  let id = e.currentTarget.userId;
   let data = new FormData(e.target); // Get form values
   data = Object.fromEntries(data); // Convert form values to object
-  let newData = all_record[id]; // Get record from array
+  let newData = getUserData(parseInt(id)); // Get user data
   newData = { ...newData, ...data }; // Merge objects
-  all_record[id] = newData; // Update record in array
+  let index = 0;
+  for (let data of all_record) {
+    if (data.id === parseInt(id)) break;
+    index++;
+  }
+  all_record[index] = newData; // Update record in array
   updateTableRow(newData); // Update table row
   hideModal();
 }
@@ -192,7 +196,7 @@ function updateRecord(e) {
 function deleteRecord(e) {
   e.preventDefault();
   let id = e.currentTarget.userId; // Get user id to remove record
-  all_record = all_record.filter((record) => record.id != id); // Filter record & remove record
+  all_record = all_record.filter((record) => record.id !== parseInt(id)); // Filter record & remove record
   deleteTableRow(id);
   if (all_record.length <= 0) noRecordToDisplayMsg();
   hideModal();
@@ -206,11 +210,10 @@ function createUpdateRecordModal(e) {
   e.preventDefault();
   let data = new FormData(e.target); // Get form values
   data = Object.fromEntries(data); // Convert form values to object
-  data.id = data.id - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
   hideModal(); // Hide search modal
   // Show view record modal after hiding search record modal
   setTimeout(() => {
-    const userData = all_record[data.id]; // Extract user data from array
+    const userData = getUserData(parseInt(data.id)); // Get user data
     const title = "Update Record"; // Modal title
     const inputFieldsData = [
       convertInputDataToObject("name", "Name", "Enter Name", "text", true, false, userData.name), // Name Input field
@@ -239,11 +242,10 @@ function createDeleteRecordModal(e) {
   e.preventDefault();
   let data = new FormData(e.target); // Get form values
   data = Object.fromEntries(data); // Convert form values to object
-  data.id = data.id - 1; // Decrement user id by 1 because array start from 0 and user record id start from 1
   hideModal(); // Hide search modal
   // Show view record modal after hiding search record modal
   setTimeout(() => {
-    const userData = all_record[data.id]; // Extract user data from array
+    const userData = getUserData(parseInt(data.id)); // Get user data
     const title = "Delete Record"; // Modal title
     const inputFieldsData = [
       convertInputDataToObject("name", "Name", "Enter Name", "text", true, true, userData.name), // Name Input field
@@ -325,7 +327,6 @@ function emailEventListner(e) {
 function numberEventListner(e) {
   const submitBtn = document.querySelector(".modal-card-footer input[type=submit]"); // Form submit button
   const id = parseInt(e.target.value); // Extract id
-  console.log(isUserExisit(id));
   const errorAlert = e.target.nextElementSibling; // Extracting next sibling (always error alert)
   if (errorAlert) errorAlert.remove(); // Remove error alert
   // If no record exist show No record to display error
@@ -338,8 +339,7 @@ function numberEventListner(e) {
     submitBtn.disabled = true; // Disable submit button
     const errorElement = createErrorAlert("ID must be greate than 0");
     e.target.insertAdjacentElement("afterend", errorElement);
-    // If id greater than total records show ID doesn't exist error
-  } else if (id > all_record.length || !isUserExisit(id)) {
+  } else if (!isUserExisit(id)) {
     submitBtn.disabled = true; // Disable submit button
     const errorElement = createErrorAlert("ID doesn't exist");
     e.target.insertAdjacentElement("afterend", errorElement);
@@ -532,6 +532,18 @@ function isUserExisit(id) {
   let found = false;
   for (let dataObj of all_record) if (dataObj.id === id) found = true;
   return found;
+}
+
+/**
+ * Get user data by id
+ * @param {number} id User id for record retrieve
+ * @returns {object} Object containing user record
+ */
+function getUserData(id) {
+  for (let dataObj of all_record)
+    if (dataObj.id === id) {
+      return dataObj;
+    }
 }
 
 /**
