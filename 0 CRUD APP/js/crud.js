@@ -126,11 +126,36 @@ updateNameLink.addEventListener("click", () => {
   ]; // Update name input field & label
   const formBtns = [
     convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
-    convertFormButtonsToObject("submit", "Update Name", ["modal-btn", "btn-submit"]),
+    convertFormButtonsToObject("submit", "Update Name", ["modal-btn", "btn-update"]),
   ]; // Form cancel & update name button
   const form = createForm();
   createModal(title, inputFieldsData, formBtns); // Create modal
   form.addEventListener("submit", updatePersonalName);
+  showModal();
+});
+
+// Open delete all records modal (Delete all records sidebar button click)
+deleteAllLink.addEventListener("click", () => {
+  const recordLength = all_record.length;
+  const delmsg = "Do you really want to delete all records?"; // Msg to display if any record exist
+  const noRecordMsg = "No Record exist"; // Msg to display if no record exist
+  const title = "Delete All Record";
+  const innerText = recordLength > 0 ? delmsg : noRecordMsg;
+  const formBtns = [
+    convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+    convertFormButtonsToObject("submit", "Delete All Records", ["modal-btn", "btn-delete"]),
+  ]; // Form cancel & delete record button
+  const form = createForm();
+  modalCardHeaderHeading.innerText = title; // Modal heading
+  const msgDiv = document.createElement("div");
+  msgDiv.innerText = innerText; // Set body text
+  msgDiv.style.color = "var(--danger-color)"; // Set color property to red (danger) colors
+  msgDiv.style.padding = "1.5rem"; // Setting padding property
+  modalCardBody.appendChild(msgDiv); // Append text into modal body
+  // Create cancel & delete all records button if any record exist else only create cancel button
+  recordLength > 0 ? createFormButtons(formBtns) : createFormButtons([formBtns[0]]);
+  // If records are exist then create from submit event listner
+  if (recordLength > 0) form.addEventListener("submit", deleteAllRecords);
   showModal();
 });
 
@@ -207,7 +232,7 @@ function updateRecord(e) {
 }
 
 /**
- * Delete user record
+ * Delete single user record
  * @param {Event} e HTML event object
  */
 function deleteRecord(e) {
@@ -216,6 +241,21 @@ function deleteRecord(e) {
   all_record = all_record.filter((record) => record.id !== parseInt(id)); // Filter record & remove record
   deleteTableRow(id);
   if (all_record.length <= 0) noRecordToDisplayMsg();
+  hideModal();
+}
+
+/**
+ * Delete all users record
+ * @param {Event} e HTML event object
+ */
+function deleteAllRecords(e) {
+  e.preventDefault();
+  all_record = []; // Remove all records
+  const tableRows = document.querySelectorAll("tbody tr"); // All table rows
+  tableRows.forEach((element) => {
+    element.remove(); // Removing all data from table
+  });
+  noRecordToDisplayMsg();
   hideModal();
 }
 
@@ -231,6 +271,7 @@ function updatePersonalName(e) {
   setPersonalName(); // Update name
   hideModal();
 }
+
 /**
  * Hide search modal & display update record modal
  * @param {Event} e HTML event object
@@ -297,7 +338,7 @@ function createDeleteRecordModal(e) {
  * Create modal input fields, buttons & set title
  * @param {string} title Modal heading
  * @param {Array<object>} inputFieldsData Input fields data
- * @param {Array<object>} formBtns Form cancel & submit button data
+ * @param {Array<object>} formBtns Form buttons data
  */
 function createModal(title, inputFieldsData, formBtns) {
   modalCardHeaderHeading.innerText = title; // Set modal title
@@ -308,15 +349,7 @@ function createModal(title, inputFieldsData, formBtns) {
     for (let elem of inputField) div.appendChild(elem); // Append input field & label into div
     modalCardBody.appendChild(div); // Append input field & label into modal card body
   });
-  // Modal buttons
-  formBtns.forEach((element) => {
-    const inputField = document.createElement("input"); // Create input field
-    inputField.type = element.type;
-    inputField.value = element.value;
-    inputField.classList.add(...element.classList);
-    if (inputField.type === "button") inputField.addEventListener("click", hideModal); // Cancel button event listner
-    modalCardFooter.appendChild(inputField); // Append form button
-  });
+  createFormButtons(formBtns); // Create form buttons & append them into modal card footer
 }
 
 /**
@@ -330,6 +363,21 @@ function createForm() {
   form.appendChild(modalCardFooter);
   modalCardHeader.insertAdjacentElement("afterend", form); // Insert form after modal header
   return form;
+}
+
+/**
+ * Create form button & append them into modal card footer
+ * @param {Array<object>} formBtns Form buttons data
+ */
+function createFormButtons(formBtns) {
+  formBtns.forEach((element) => {
+    const inputField = document.createElement("input"); // Create input field
+    inputField.type = element.type;
+    inputField.value = element.value;
+    inputField.classList.add(...element.classList);
+    if (inputField.type === "button") inputField.addEventListener("click", hideModal); // Cancel button event listner
+    modalCardFooter.appendChild(inputField); // Append form button
+  });
 }
 
 /**
