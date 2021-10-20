@@ -117,6 +117,23 @@ deleteRecordLink.addEventListener("click", () => {
   showModal();
 });
 
+// Open update personal name modal (Update your name sidebar button click)
+updateNameLink.addEventListener("click", () => {
+  const existingName = localStorage.getItem("name"); // Get user name from local storage
+  const title = "Update Your Name";
+  const inputFieldsData = [
+    convertInputDataToObject("personalName", "Name", "Enter Name", "text", true, false, existingName),
+  ]; // Update name input field & label
+  const formBtns = [
+    convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+    convertFormButtonsToObject("submit", "Update Name", ["modal-btn", "btn-submit"]),
+  ]; // Form cancel & update name button
+  const form = createForm();
+  createModal(title, inputFieldsData, formBtns); // Create modal
+  form.addEventListener("submit", updatePersonalName);
+  showModal();
+});
+
 // Close modal on close button click
 modalCardHeaderCloseBtn.addEventListener("click", hideModal);
 
@@ -202,6 +219,18 @@ function deleteRecord(e) {
   hideModal();
 }
 
+/**
+ * Update personal name
+ * @param {Event} e HTML event object
+ */
+function updatePersonalName(e) {
+  e.preventDefault();
+  let name = new FormData(e.target); // Extracting name
+  name = Object.fromEntries(name); // Convert to object
+  localStorage.setItem("name", name.personalName); // Set name in local storage
+  setPersonalName(); // Update name
+  hideModal();
+}
 /**
  * Hide search modal & display update record modal
  * @param {Event} e HTML event object
