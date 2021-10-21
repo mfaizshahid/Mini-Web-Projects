@@ -443,7 +443,50 @@ function addNewTableRow(userData) {
     tableRow.appendChild(tableData); // Append td into tr
   }
   const editIcon = createIcon("edit", ["material-icons", "edit"]); // Edit icon
+  // Table row edit icon click event listner
+  editIcon.addEventListener("click", () => {
+    const userId = tableRow.id;
+    const userData = getUserData(parseInt(userId)); // Get user data
+    const title = "Update Record"; // Modal title
+    const inputFieldsData = [
+      convertInputDataToObject("name", "Name", "Enter Name", "text", true, false, userData.name), // Name Input field
+      convertInputDataToObject("email", "Email", "Enter Email", "email", true, false, userData.email), // Email Input field
+      convertInputDataToObject("createdAt", "Created At", null, "text", false, true, userData.createdAt), // Created At Input field
+    ];
+    const formBtns = [
+      convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+      convertFormButtonsToObject("submit", "Update Record", ["modal-btn", "btn-update"]),
+    ]; // Form cancel & submit button
+    const form = createForm();
+    createModal(title, inputFieldsData, formBtns);
+    const emailField = document.querySelector(".modal-card-body input[type=email]"); // Email input field
+    emailField.addEventListener("change", emailEventListner); // Input field change event for checking duplicate email
+    form.addEventListener("submit", updateRecord); // Form submit event listner
+    form.userId = userData.id; // Pass user id as an parameter
+    showModal();
+  });
   const deleteIcon = createIcon("delete", ["material-icons", "delete"]); // Delete icon
+  // Table row delete icon click event listner
+  deleteIcon.addEventListener("click", () => {
+    const userId = tableRow.id;
+    const userData = getUserData(parseInt(userId)); // Get user data
+    const title = "Delete Record"; // Modal title
+    const inputFieldsData = [
+      convertInputDataToObject("name", "Name", "Enter Name", "text", true, true, userData.name), // Name Input field
+      convertInputDataToObject("email", "Email", "Enter Email", "email", true, true, userData.email), // Email Input field
+      convertInputDataToObject("createdAt", "Created At", null, "text", false, true, userData.createdAt), // Created At Input field
+    ];
+    const formBtns = [
+      convertFormButtonsToObject("button", "Cancel", ["modal-btn", "btn-cancel"]),
+      convertFormButtonsToObject("submit", "Delete Record", ["modal-btn", "btn-delete"]),
+    ]; // Form cancel & submit button
+    const form = createForm();
+    createModal(title, inputFieldsData, formBtns);
+    form.addEventListener("submit", deleteRecord); // Form submit event listner
+    form.userId = userData.id; // Pass user id as an parameter
+    showModal();
+  });
+
   const actionColumn = document.createElement("td"); // Create action coluns
   actionColumn.appendChild(editIcon);
   actionColumn.appendChild(deleteIcon);
