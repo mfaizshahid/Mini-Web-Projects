@@ -3,6 +3,7 @@ const sideBar = document.getElementById("sidebar"); // Sidebar
 const mainContent = document.getElementById("main_content"); // Main content
 const mediaQuery850To1400 = window.matchMedia("(min-width:850px) and (max-width:1400px)"); // Between 850px & 1400px media query
 const userName = document.getElementById("user_name"); // Welcome message text
+const totalRecords = document.querySelector("#total_records span"); // Total records display text
 // ------------------ Table variables ------------------
 const tableBody = document.querySelector("#table tbody"); // Table body
 // ------------------ Modal variables ------------------
@@ -25,6 +26,7 @@ const deleteAllLink = document.getElementById("delete_all_link"); // Delete all 
 let all_record = []; // Array of object to hold all records
 setPersonalName(); // Set personal name
 noRecordToDisplayMsg(); // Set default message if user record isn't available
+totalRecords.innerText = 0;
 
 // ================= Events =================
 // Menu icon click event listner, handle opening & closing of sidebar
@@ -181,6 +183,7 @@ function addRecord(e) {
   all_record.push(userData); // Push record into array
   if (all_record.length === 1) removeNoRecordToDisplayMsg(); // Remove no data to display msg
   addNewTableRow(userData); // Add new table row
+  totalRecords.innerText = all_record.length; // Update total records
   hideModal();
 }
 
@@ -241,6 +244,7 @@ function deleteRecord(e) {
   all_record = all_record.filter((record) => record.id !== parseInt(id)); // Filter record & remove record
   deleteTableRow(id);
   if (all_record.length <= 0) noRecordToDisplayMsg();
+  totalRecords.innerText = all_record.length; // Update total records
   hideModal();
 }
 
@@ -256,6 +260,7 @@ function deleteAllRecords(e) {
     element.remove(); // Removing all data from table
   });
   noRecordToDisplayMsg();
+  totalRecords.innerText = all_record.length; // Update total records
   hideModal();
 }
 
