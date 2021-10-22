@@ -1,9 +1,16 @@
 const menuIcon = document.getElementById("menu_icon"); // Menu icon
 const sideBar = document.getElementById("sidebar"); // Sidebar
 const mainContent = document.getElementById("main_content"); // Main content
-const mediaQuery850To1400 = window.matchMedia("(min-width:850px) and (max-width:1400px)"); // Between 850px & 1400px media query
+const largeScreenMediaQuery = window.matchMedia("(min-width:850px)"); // Between 850px & 1400px media query
 const userName = document.getElementById("user_name"); // Welcome message text
 const totalRecords = document.querySelector("#total_records span"); // Total records display text
+let isMobile = !largeScreenMediaQuery.matches; // Variable to hold small or large screen change
+// ------------------ Open sidebar if large screen ------------------
+if (!isMobile) {
+  sideBar.classList.add("open"); //  Change width of sidebar
+  mainContent.classList.add("open"); // Add margin left to main content
+}
+
 // ------------------ Table variables ------------------
 const tableBody = document.querySelector("#table tbody"); // Table body
 // ------------------ Modal variables ------------------
@@ -22,6 +29,7 @@ const updateRecordLink = document.getElementById("update_record_link"); // Updat
 const deleteRecordLink = document.getElementById("delete_record_link"); // Delete record sidebar link
 const updateNameLink = document.getElementById("update_name_link"); // Update your name sidebar link
 const deleteAllLink = document.getElementById("delete_all_link"); // Delete all records sidebar link
+
 // ------------------ All Data ------------------
 let all_record = []; // Array of object to hold all records
 setPersonalName(); // Set personal name
@@ -33,21 +41,32 @@ totalRecords.innerText = 0;
 menuIcon.addEventListener("click", () => {
   sideBar.classList.toggle("open"); //  Change width of sidebar
   mainContent.classList.toggle("open"); // Add margin left to main content
+  // Remove modal if menu icon again click after open modal
+  // if (modal.classList.contains("open")) hideModal();
 });
 
-// Media query change event listner between 850px & 1400px, handle layout arrangment.
-mediaQuery850To1400.addEventListener("change", (e) => {
+// Media query change event listner, handle layout arrangment.
+largeScreenMediaQuery.addEventListener("change", (e) => {
   if (e.matches) {
     sideBar.classList.add("open"); //  Change width of sidebar
     mainContent.classList.add("open"); // Add margin left to main content
+    isMobile = false;
   } else {
     sideBar.classList.remove("open"); //  Change width of sidebar
     mainContent.classList.remove("open"); // Add margin left to main content
+    isMobile = true;
   }
 });
 
 // Open add new record modal (Add new link sidebar button click)
 addRecordLink.addEventListener("click", () => {
+  // On small screen remove sidebar open class
+  if (isMobile)
+    if (sideBar.classList.contains("open")) {
+      sideBar.classList.remove("open");
+      mainContent.classList.remove("open");
+    }
+  // Close modal if modal already open
   const title = "Add New Record";
   const inputFieldsData = [
     convertInputDataToObject("name", "Name", "Enter Name", "text", true, false, null), // Name input field data
@@ -67,6 +86,12 @@ addRecordLink.addEventListener("click", () => {
 
 // Open search modal (View record by ID sidebar button click)
 viewRecordLink.addEventListener("click", () => {
+  // On small screen remove sidebar open class
+  if (isMobile)
+    if (sideBar.classList.contains("open")) {
+      sideBar.classList.remove("open");
+      mainContent.classList.remove("open");
+    }
   const title = "Search Record";
   const inputFieldsData = [
     convertInputDataToObject("id", "Search Record", "Enter ID", "number", true, false, null), // Search input field & label
@@ -85,6 +110,12 @@ viewRecordLink.addEventListener("click", () => {
 
 // Open search modal (Update record by ID sidebar button click)
 updateRecordLink.addEventListener("click", () => {
+  // On small screen remove sidebar open class
+  if (isMobile)
+    if (sideBar.classList.contains("open")) {
+      sideBar.classList.remove("open");
+      mainContent.classList.remove("open");
+    }
   const title = "Search Record";
   const inputFieldsData = [
     convertInputDataToObject("id", "Search Record", "Enter ID", "number", true, false, null), // Search input field & label
@@ -103,6 +134,12 @@ updateRecordLink.addEventListener("click", () => {
 
 // Open search modal (Delete record by ID sidebar button click)
 deleteRecordLink.addEventListener("click", () => {
+  // On small screen remove sidebar open class
+  if (isMobile)
+    if (sideBar.classList.contains("open")) {
+      sideBar.classList.remove("open");
+      mainContent.classList.remove("open");
+    }
   const title = "Search Record";
   const inputFieldsData = [
     convertInputDataToObject("id", "Search Record", "Enter ID", "number", true, false, null), // Search input field & label
@@ -121,6 +158,12 @@ deleteRecordLink.addEventListener("click", () => {
 
 // Open update personal name modal (Update your name sidebar button click)
 updateNameLink.addEventListener("click", () => {
+  // On small screen remove sidebar open class
+  if (isMobile)
+    if (sideBar.classList.contains("open")) {
+      sideBar.classList.remove("open");
+      mainContent.classList.remove("open");
+    }
   const existingName = localStorage.getItem("name"); // Get user name from local storage
   const title = "Update Your Name";
   const inputFieldsData = [
@@ -138,6 +181,12 @@ updateNameLink.addEventListener("click", () => {
 
 // Open delete all records modal (Delete all records sidebar button click)
 deleteAllLink.addEventListener("click", () => {
+  // On small screen remove sidebar open class
+  if (isMobile)
+    if (sideBar.classList.contains("open")) {
+      sideBar.classList.remove("open");
+      mainContent.classList.remove("open");
+    }
   const recordLength = all_record.length;
   const delmsg = "Do you really want to delete all records?"; // Msg to display if any record exist
   const noRecordMsg = "No Record exist"; // Msg to display if no record exist
@@ -433,15 +482,30 @@ function numberEventListner(e) {
  * @param {object} userData Object containg user information
  */
 function addNewTableRow(userData) {
-  const dataValues = Object.values(userData); // Convert object values to array
   const tableRow = document.createElement("tr");
-  tableRow.id = dataValues[0]; // Set id of row
+  tableRow.id = userData.id; // Set id of row
   // Loop through data & create table data
-  for (let value of dataValues) {
+  Object.entries(userData).forEach(([key, value]) => {
     const tableData = document.createElement("td");
-    tableData.innerText = value;
+    tableData.innerHTML = `<span class="data">${value}</span>`;
+    // Setting data label attribute (For responsive table)
+    switch (key) {
+      case "id":
+        tableData.setAttribute("data-label", "User ID");
+        break;
+      case "name":
+        tableData.setAttribute("data-label", "Name");
+        break;
+      case "email":
+        tableData.setAttribute("data-label", "Email");
+        break;
+      case "createdAt":
+        tableData.setAttribute("data-label", "Created At");
+        break;
+    }
     tableRow.appendChild(tableData); // Append td into tr
-  }
+  });
+
   const editIcon = createIcon("edit", ["material-icons", "edit"]); // Edit icon
   // Table row edit icon click event listner
   editIcon.addEventListener("click", () => {
@@ -488,6 +552,8 @@ function addNewTableRow(userData) {
   });
 
   const actionColumn = document.createElement("td"); // Create action coluns
+  actionColumn.setAttribute("data-label", "Action");
+  actionColumn.classList.add("icons");
   actionColumn.appendChild(editIcon);
   actionColumn.appendChild(deleteIcon);
   tableRow.appendChild(actionColumn); // Append td into tr

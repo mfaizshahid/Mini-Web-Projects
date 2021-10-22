@@ -8,9 +8,9 @@
 }
 
 /* ================= Body Style ================= */
-body {
+/* body {
   background-color: rgba(0, 0, 0, 0.15);
-}
+} */
 
 /* Links decoration none */
 a {
@@ -38,7 +38,9 @@ a {
 #navbar {
   position: sticky;
   top: 0;
+  z-index: 2;
 }
+
 /* Navbar header */
 #navbar .navbar-header {
   background-color: var(--primary-dark-color);
@@ -48,10 +50,16 @@ a {
 /* Navbar */
 #navbar .navbar {
   background-color: var(--primary-color);
+}
+
+#navbar .navbar .nav {
   padding: 0.8rem 1rem;
   display: flex;
   align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
 }
+
 /* Navbar menu icon */
 #navbar .navbar .nav-menu-icon {
   font-size: 2rem;
@@ -94,7 +102,8 @@ a {
 }
 /* Sidebar open */
 #sidebar.open {
-  width: 15rem;
+  width: 100%;
+  z-index: 1;
 }
 
 /* Sidebar link */
@@ -104,7 +113,7 @@ a {
   padding: 0.5rem 1rem;
   margin: 1rem 0;
   cursor: pointer;
-  font-size: 0.93rem;
+  font-size: 0.9rem;
   transition: all 0.2s linear 0.1s;
 }
 
@@ -125,6 +134,12 @@ a {
   margin-right: 1rem;
 }
 
+/* ================= Body (Div) =================  */
+#body {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
 /* ================= Main content style =================  */
 #main_content {
   margin-left: 3.75rem;
@@ -132,7 +147,7 @@ a {
   min-height: calc(100vh - 4.585rem);
 }
 #main_content.open {
-  margin-left: 15rem;
+  margin-left: 13.5rem;
 }
 /* Username */
 #main_content .username {
@@ -141,85 +156,136 @@ a {
   padding: 0.5rem 1rem;
   border-bottom: 2px solid var(--text-dark-color);
 }
+
 /* Username user icon */
 #main_content .username span.material-icons {
-  font-size: 2.5rem;
-  margin-right: 1rem;
-}
-/* Total rows */
-#main_content .username #total_records {
-  margin-left: auto;
+  font-size: 2rem;
+  margin-right: 0.5rem;
+  display: inline;
 }
 
+#main_content h2 {
+  font-size: 0.7rem;
+}
+
+.username #total_records {
+  margin-left: auto;
+}
+/* Total record text */
 .username #total_records span {
   color: var(--info-dark-color);
 }
+
 /* Table */
 #main_content #table {
-  width: 100%;
   border-collapse: collapse;
-  margin-top: 1.5rem;
+  table-layout: fixed;
+  margin: 1rem 0.7rem;
 }
-/* Table heading & table row */
-#main_content #table td,
-#main_content #table th {
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  padding: 0.3rem 0.5rem;
-  text-align: left;
+
+#table,
+#table tbody,
+#table tbody tr,
+#table tbody td {
+  display: block;
+}
+
+/* Table row */
+#table tbody tr {
+  margin-bottom: 1.5rem;
+  position: relative;
+  border-radius: 0.25rem;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+/* Table data text */
+#table tbody td span.data {
+  font-size: 0.8rem;
+  margin-left: 7rem;
+  padding: 0.5rem 0 0.5rem 1rem;
+  display: block;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+/* Table data headings */
+#table tbody td::before {
+  content: attr(data-label);
+  border-radius: 0.25rem 0 0 0;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  width: 7rem;
+  font-size: 0.8rem;
+  padding: 0.55rem 0 0.7rem 0.9rem;
+  background-color: var(--primary-color);
+}
+
+/* Actions table column */
+#table tbody td.icons::before {
+  border-radius: 0 0 0 0.25rem;
 }
 
 /* Even table row */
-#main_content #table tr:nth-child(even) {
+#table tr:nth-child(even) {
   background-color: rgba(0, 0, 0, 0.15);
 }
-/* Even table row hover */
-#main_content #table tr:hover {
+/* Table row hover */
+#table tr:hover {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Header row */
-#main_content #table th {
-  background-color: var(--primary-dark-color);
-  color: var(--text-white-color);
-}
-
-/* No record row hover state */
-#main_content #table .no-record-row:hover {
-  background-color: transparent;
-}
-/* No record data */
-#main_content #table .no-record-data {
-  text-align: center;
-  padding: 2rem 0;
-  font-size: xx-large;
+/* No record data message (display when no record exist) */
+#table .no-record-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 7rem;
+  font-size: 1.2rem;
+  font-weight: bold;
   color: rgba(0, 0, 0, 0.4);
 }
 
+/* No record row hover state */
+#table .no-record-row:hover {
+  background-color: transparent;
+}
+
+#table tbody td.no-record-data::before {
+  display: none;
+}
+
 /* Action icons */
-#main_content #table tr span {
-  font-size: 2rem;
+#table tr span.edit,
+#table tr span.delete {
+  margin: 0.17rem 0;
+  padding: 0.2rem;
+  border-radius: 1rem;
   cursor: pointer;
-  border-radius: 0.5rem;
   transition: all 0.2s linear 0.1s;
 }
+
 /* Edit action icon */
-#main_content #table tr span.edit {
+#table tr span.edit {
   background-color: var(--primary-color);
   color: var(--text-dark-color);
   margin-right: 0.7rem;
+  margin-left: 8rem;
 }
+
 /* Edit action icon hover state */
-#main_content #table tr span.edit:hover {
+#table tr span.edit:hover {
   background-color: var(--primary-dark-color);
   color: var(--text-white-color);
 }
+
 /* Delete action icon */
-#main_content #table tr span.delete {
+#table tr span.delete {
   background-color: var(--danger-color);
   color: var(--text-dark-color);
 }
+
 /* Delete action icon hover state*/
-#main_content #table tr span.delete:hover {
+#table tr span.delete:hover {
   background-color: var(--danger-dark-color);
   color: var(--text-white-color);
 }
@@ -240,6 +306,7 @@ a {
   position: absolute;
   top: -500%;
   left: 50%;
+  z-index: 4;
   transform: translateX(-50%);
   --card-padding: 0.5rem 1rem;
   --border-radius: 5px;
@@ -253,6 +320,7 @@ a {
   border-radius: var(--border-radius);
   width: 80%;
   opacity: 0;
+  z-index: 5;
   transform: translateY(-500%);
   transition: transform 0.6s linear 0.1s, opacity 0.6s linear 0.2s;
 }
@@ -368,10 +436,10 @@ a {
 .modal .modal-overlay {
   background-color: var(--text-dark-color);
   opacity: 0.3;
-  z-index: -1;
+  z-index: 3;
   position: absolute;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
 }
 
 /* Modal open */
@@ -385,9 +453,20 @@ a {
   transform: translateY(0);
 }
 
-@media screen and (min-width: 850px) and (max-width: 1400px) {
+/* ================= Style for large devices (850px or more) =================  */
+
+@media screen and (min-width: 850px) {
+  /* Sidebar open */
+  #sidebar.open {
+    width: 13.5rem;
+  }
   /* Modal card */
   .modal .modal-card {
     width: 40rem;
+  }
+
+  /* Welcome message & total record */
+  #main_content h2 {
+    font-size: 1rem;
   }
 }
