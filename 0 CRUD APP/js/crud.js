@@ -1,7 +1,7 @@
 const menuIcon = document.getElementById("menu_icon"); // Menu icon
 const sideBar = document.getElementById("sidebar"); // Sidebar
 const mainContent = document.getElementById("main_content"); // Main content
-const largeScreenMediaQuery = window.matchMedia("(min-width:850px)"); // Between 850px & 1400px media query
+const largeScreenMediaQuery = window.matchMedia("(min-width:850px)"); // Media query for devices having width greater than 850px
 const userName = document.getElementById("user_name"); // Welcome message text
 const totalRecords = document.querySelector("#total_records span"); // Total records display text
 let isMobile = !largeScreenMediaQuery.matches; // Variable to hold small or large screen change
@@ -32,6 +32,7 @@ const deleteAllLink = document.getElementById("delete_all_link"); // Delete all 
 
 // ------------------ All Data ------------------
 let all_record = []; // Array of object to hold all records
+let userID = 1; // Holding user ID's
 setPersonalName(); // Set personal name
 noRecordToDisplayMsg(); // Set default message if user record isn't available
 totalRecords.innerText = 0;
@@ -221,7 +222,7 @@ modalOverlay.addEventListener("click", hideModal);
  */
 function addRecord(e) {
   e.preventDefault();
-  let userData = { id: all_record.length + 1 };
+  let userData = { id: userID++ }; // Set user ID & increment it
   let formData = new FormData(e.target); // Get form values
   formData = Object.fromEntries(formData); // Convert form values to object
   userData = { ...userData, ...formData };
@@ -271,6 +272,7 @@ function updateRecord(e) {
   data = Object.fromEntries(data); // Convert form values to object
   let newData = getUserData(parseInt(id)); // Get user data
   newData = { ...newData, ...data }; // Merge objects
+  // Found array index to update record
   let index = 0;
   for (let data of all_record) {
     if (data.id === parseInt(id)) break;
@@ -569,7 +571,7 @@ function updateTableRow(userData) {
   for (let tableData of tableRow.children) {
     // Do not update table data contain icons
     if (index > 3) break;
-    tableData.innerText = dataValues[index]; // Update table data
+    tableData.innerHTML = `<span class="data">${dataValues[index]}</span>`; // Update table data
     index++; // Increment index
   }
 }
