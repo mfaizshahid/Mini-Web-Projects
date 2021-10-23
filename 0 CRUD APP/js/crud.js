@@ -41,8 +41,6 @@ totalRecords.innerText = 0;
 menuIcon.addEventListener("click", () => {
   sideBar.classList.toggle("open"); //  Change width of sidebar
   mainContent.classList.toggle("open"); // Add margin left to main content
-  // Remove modal if menu icon again click after open modal
-  // if (modal.classList.contains("open")) hideModal();
 });
 
 // Media query change event listner, handle layout arrangment.
