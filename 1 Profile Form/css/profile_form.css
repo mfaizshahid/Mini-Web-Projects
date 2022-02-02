@@ -1,0 +1,171 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,600&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+#body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  flex-direction: column;
+  background: linear-gradient(to bottom, #933aec, #7433a3);
+}
+
+/* title */
+#title {
+  color: #ffffff;
+  font-weight: 600;
+  font-style: oblique;
+  text-align: center;
+}
+
+#description {
+  padding: 0.5rem 1rem;
+  font-weight: normal;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Profile form */
+#survey-form {
+  color: #ffffff;
+  background: rgba(0, 0, 0, 0.582);
+  width: 100%;
+  padding: 1rem;
+  border-radius: 3px;
+  box-shadow: rgb(255, 255, 255) 0px 1px 5px;
+}
+
+/* Each form items */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5rem 0;
+  transition: all 0.6s ease-in 0.2s;
+}
+
+/* Input field */
+.input-item {
+  padding: 0.3rem 0.6rem;
+  outline: none;
+  border: none;
+  border-radius: 3px;
+  width: 100%;
+  margin-top: 0.3rem;
+}
+
+.input-item:focus {
+  border: 1px solid #933aec;
+  outline: 2px solid #933aec;
+}
+
+/* Gender radio button */
+.gender-form-group {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+.gender-form-group label {
+  margin-right: 1.5rem;
+  cursor: pointer;
+}
+.gender-form-group div label {
+  margin-left: 0.5rem;
+}
+/* Input type radio */
+input[type="radio"] {
+  appearance: none;
+  border: 2px solid #ffffff;
+  width: 12px;
+  height: 12px;
+  padding: 3px;
+  border-radius: 50%;
+  color: #ffffff;
+  background-color: #ffffff;
+}
+input[type="radio"]:hover {
+  cursor: pointer;
+  background-color: #000000;
+}
+
+input[type="radio"]:checked {
+  background-color: #000000;
+}
+
+/* Date of birth */
+.date-of-birth {
+  margin: 1.5rem 0;
+}
+.birth-date {
+  display: flex;
+  align-items: center;
+
+  flex-direction: column;
+}
+
+/* Learn checkbox*/
+.learn-form-group {
+  margin: 1.5rem 0;
+}
+.learn-form-group fieldset {
+  border: none;
+  margin-top: 0.3rem;
+}
+.learn-form-group fieldset label {
+  margin-left: 0.3rem;
+}
+
+/* Additional comments */
+.additional-comment-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.additional-comment-form-group textarea {
+  max-width: 100%;
+}
+
+.submit-btn {
+  width: 100%;
+  margin: 1.5rem 0;
+  background-color: #a044ff;
+  color: #000000;
+  padding: 0.5rem 0;
+  font-weight: 500;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50rem;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+
+  transition: all 0.8s ease;
+}
+
+.submit-btn:hover {
+  background-color: #6a3093;
+  color: #ffffff;
+}
+
+/* For devices higher than 550 px */
+@media screen and (min-width: 550px) {
+  #survey-form {
+    max-width: 550px;
+  }
+  .birth-date {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .birth-date select {
+    margin-right: 1rem;
+  }
+  .birth-date select:last-child {
+    margin-right: 0;
+  }
+}
