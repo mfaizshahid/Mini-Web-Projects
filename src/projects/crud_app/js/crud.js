@@ -255,7 +255,7 @@ function viewRecord(e) {
     ];
     const formBtns = [convertFormButtonsToObject("button", "Go Back", ["modal-btn", "btn-cancel"])]; // Form go back button
     // Form creation is important because when removeModalFields function remove form. (No form here means error)
-    const form = createForm();
+    createForm();
     createModal(title, inputFieldsData, formBtns);
     showModal();
   }, 700);

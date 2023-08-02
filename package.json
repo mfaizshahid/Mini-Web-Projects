@@ -1,0 +1,30 @@
+{
+  "name": "mini-web-projects",
+  "version": "1.0.0",
+  "description": "A repository that contains mini web projects using HTML, CSS & JavaScript. The main goal of this repository is not to use any framework or external libraries instead only pure vanilla code. Each project contain it's own README file for more information about specific project",
+  "scripts": {
+    "dev": "vite",
+    "preview": "vite preview",
+    "build": "vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mfaizshahid/Mini-Web-Projects.git"
+  },
+  "keywords": [
+    "HTML",
+    "CSS",
+    "JS",
+    "Vanilla",
+    "JS"
+  ],
+  "author": "mfaizshahid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mfaizshahid/Mini-Web-Projects/issues"
+  },
+  "homepage": "https://github.com/mfaizshahid/Mini-Web-Projects#readme",
+  "devDependencies": {
+    "vite": "^4.4.8"
+  }
+}
